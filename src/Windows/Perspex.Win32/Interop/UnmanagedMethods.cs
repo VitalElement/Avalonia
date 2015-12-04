@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 // ReSharper disable InconsistentNaming
-#pragma warning disable 169
+#pragma warning disable 169, 649
 
 namespace Perspex.Win32.Interop
 {
@@ -806,8 +806,8 @@ namespace Perspex.Win32.Interop
             public IntPtr lpstrInitialDir;
             public IntPtr lpstrTitle;
             public OpenFileNameFlags Flags;
-            private ushort Unused;
-            private ushort Unused2;
+            private readonly ushort Unused;
+            private readonly ushort Unused2;
             public IntPtr lpstrDefExt;
             public IntPtr lCustData;
             public IntPtr lpfnHook;

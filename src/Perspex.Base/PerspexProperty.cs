@@ -56,7 +56,7 @@ namespace Perspex
         /// <summary>
         /// Gets the ID of the property.
         /// </summary>
-        private int _id;
+        private readonly int _id;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PerspexProperty"/> class.
@@ -538,7 +538,7 @@ namespace Perspex
         public override bool Equals(object obj)
         {
             var p = obj as PerspexProperty;
-            return p != null ? Equals(p) : false;
+            return p != null && Equals(p);
         }
 
         /// <inheritdoc/>

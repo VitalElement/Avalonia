@@ -31,7 +31,6 @@ namespace Perspex.Threading
         /// Initializes a new instance of the <see cref="DispatcherTimer"/> class.
         /// </summary>
         /// <param name="priority">The priority to use.</param>
-        /// <param name="dispatcher">The dispatcher to use.</param>
         public DispatcherTimer(DispatcherPriority priority)
         {
             _priority = priority;
@@ -43,7 +42,6 @@ namespace Perspex.Threading
         /// </summary>
         /// <param name="interval">The interval at which to tick.</param>
         /// <param name="priority">The priority to use.</param>
-        /// <param name="dispatcher">The dispatcher to use.</param>
         /// <param name="callback">The event to call when the timer ticks.</param>
         public DispatcherTimer(TimeSpan interval, DispatcherPriority priority, EventHandler callback) : this(priority)
         {
@@ -133,9 +131,8 @@ namespace Perspex.Threading
         /// <returns>An <see cref="IDisposable"/> used to cancel the timer.</returns>
         public static IDisposable Run(Func<bool> action, TimeSpan interval, DispatcherPriority priority = DispatcherPriority.Normal)
         {
-            var timer = new DispatcherTimer(priority);
+            var timer = new DispatcherTimer(priority) { Interval = interval };
 
-            timer.Interval = interval;
             timer.Tick += (s, e) =>
             {
                 if (!action())
@@ -189,10 +186,7 @@ namespace Perspex.Threading
         /// </summary>
         private void RaiseTick()
         {
-            if (Tick != null)
-            {
-                Tick(this, EventArgs.Empty);
-            }
+            Tick?.Invoke(this, EventArgs.Empty);
         }
     }
 }

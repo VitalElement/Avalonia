@@ -71,6 +71,7 @@ namespace Perspex.Controls
         private DataTemplates _dataTemplates;
         private IControl _focusAdorner;
         private IPerspexList<ILogical> _logicalChildren;
+        private INameScope _nameScope;
         private Styles _styles;
 
         /// <summary>
@@ -82,6 +83,14 @@ namespace Perspex.Controls
             PseudoClass(IsEnabledCoreProperty, x => !x, ":disabled");
             PseudoClass(IsFocusedProperty, ":focus");
             PseudoClass(IsPointerOverProperty, ":pointerover");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
+        public Control()
+        {
+            _nameScope = this as INameScope;
         }
 
         /// <summary>
@@ -147,20 +156,8 @@ namespace Perspex.Controls
         /// </remarks>
         public DataTemplates DataTemplates
         {
-            get
-            {
-                if (_dataTemplates == null)
-                {
-                    _dataTemplates = new DataTemplates();
-                }
-
-                return _dataTemplates;
-            }
-
-            set
-            {
-                _dataTemplates = value;
-            }
+            get { return _dataTemplates ?? (_dataTemplates = new DataTemplates()); }
+            set { _dataTemplates = value; }
         }
 
         /// <summary>
@@ -173,20 +170,8 @@ namespace Perspex.Controls
         /// </remarks>
         public Styles Styles
         {
-            get
-            {
-                if (_styles == null)
-                {
-                    _styles = new Styles();
-                }
-
-                return _styles;
-            }
-
-            set
-            {
-                _styles = value;
-            }
+            get { return _styles ?? (_styles = new Styles()); }
+            set { _styles = value; }
         }
 
         /// <summary>
@@ -232,6 +217,11 @@ namespace Perspex.Controls
         /// Button.
         /// </remarks>
         Type IStyleable.StyleKey => GetType();
+
+        /// <summary>
+        /// Gets the parent style host element.
+        /// </summary>
+        IStyleHost IStyleHost.StylingParent => (IStyleHost)InheritanceParent;
 
         /// <summary>
         /// Gets a value which indicates whether a change to the <see cref="DataContext"/> is in 
@@ -312,7 +302,7 @@ namespace Perspex.Controls
                 throw new ArgumentException("Cannot supply an empty className.");
             }
 
-            Observable.Merge(property.Changed, property.Initialized)
+            property.Changed.Merge(property.Initialized)
                 .Subscribe(e =>
                 {
                     if (selector((T)e.NewValue))
@@ -376,11 +366,27 @@ namespace Perspex.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            IStyler styler = PerspexLocator.Current.GetService<IStyler>();
-
-            if (styler != null)
+            if (_nameScope == null)
             {
-                styler.ApplyStyles(this);
+                _nameScope = NameScope.GetNameScope(this) ?? ((Control)Parent)?._nameScope;
+            }
+
+            if (Name != null)
+            {
+                _nameScope?.Register(Name, this);
+            }
+
+            PerspexLocator.Current.GetService<IStyler>()?.ApplyStyles(this);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+
+            if (Name != null)
+            {
+                _nameScope?.Unregister(Name);
             }
         }
 

@@ -31,7 +31,7 @@ namespace Perspex.Markup.Xaml.Data
         /// <summary>
         /// Gets or sets the binding mode.
         /// </summary>
-        public BindingMode Mode { get; set; }
+        public BindingMode Mode { get; set; } = BindingMode.OneWay;
 
         /// <summary>
         /// Gets or sets the binding priority.
@@ -79,7 +79,7 @@ namespace Perspex.Markup.Xaml.Data
 
             var result = new BehaviorSubject<object>(PerspexProperty.UnsetValue);
             var children = Bindings.Select(x => x.CreateSubject(target, typeof(object)));
-            var input = Observable.CombineLatest(children).Select(x =>
+            var input = children.CombineLatest().Select(x =>
                 Converter.Convert(x, targetType, null, CultureInfo.CurrentUICulture));
             input.Subscribe(result);
             return result;
