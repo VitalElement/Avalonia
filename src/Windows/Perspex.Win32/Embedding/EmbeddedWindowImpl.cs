@@ -10,6 +10,8 @@ namespace Perspex.Win32
     {
         private static readonly System.Windows.Forms.UserControl WinFormsControl = new System.Windows.Forms.UserControl();
 
+        public IntPtr Handle { get; private set; }
+
         protected override IntPtr CreateWindowOverride(ushort atom)
         {
             var hWnd = UnmanagedMethods.CreateWindowEx(
@@ -25,6 +27,7 @@ namespace Perspex.Win32
                 IntPtr.Zero,
                 IntPtr.Zero,
                 IntPtr.Zero);
+            Handle = hWnd;
             return hWnd;
         }
     }

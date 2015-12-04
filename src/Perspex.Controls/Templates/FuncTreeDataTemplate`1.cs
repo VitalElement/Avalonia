@@ -117,7 +117,7 @@ namespace Perspex.Controls.Templates
         /// <returns>The untyped function.</returns>
         private static Func<object, bool> CastMatch(Func<T, bool> f)
         {
-            return o => (o is T) && f((T)o);
+            return o => (o is T) ? f((T)o) : false;
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace Perspex.Markup.Data.Parsers
 {
     internal class Reader
     {
-        private readonly string _s;
+        private string _s;
         private int _i;
 
         public Reader(string s)

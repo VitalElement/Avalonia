@@ -15,8 +15,8 @@ namespace Perspex.Markup.Data
     /// </summary>
     public class ExpressionSubject : ISubject<object>, IDescription
     {
-        private readonly ExpressionObserver _inner;
-        private readonly Type _targetType;
+        private ExpressionObserver _inner;
+        private Type _targetType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionObserver"/> class.

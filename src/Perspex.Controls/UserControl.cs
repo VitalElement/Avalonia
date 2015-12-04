@@ -8,7 +8,7 @@ namespace Perspex.Controls
 {
     public class UserControl : ContentControl, IStyleable, INameScope
     {
-        private readonly NameScope _nameScope = new NameScope();
+        private NameScope _nameScope = new NameScope();
 
         /// <inheritdoc/>
         event EventHandler<NameScopeEventArgs> INameScope.Registered

@@ -247,7 +247,7 @@ namespace Perspex.Direct2D1.Media
             _renderTarget.PopAxisAlignedClip();
         }
 
-        readonly Stack<Layer> _layers = new Stack<Layer>();
+        Stack<Layer> _layers = new Stack<Layer>();
         private readonly Stack<Layer> _layerPool = new Stack<Layer>();
         /// <summary>
         /// Pushes an opacity value.

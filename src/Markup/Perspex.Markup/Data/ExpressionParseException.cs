@@ -6,26 +6,19 @@ using Perspex.Markup.Data.Parsers;
 
 namespace Perspex.Markup.Data
 {
-    /// <summary>
-    /// Exception thrown when <see cref="ExpressionObserver"/> could not parse the provided
-    /// expression string.
-    /// </summary>
     public class ExpressionParseException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionParseException"/> class.
-        /// </summary>
-        /// <param name="column">The column position of the error.</param>
-        /// <param name="message">The exception message.</param>
-        public ExpressionParseException(int column, string message)
+        internal ExpressionParseException(int column, string message)
             : base(message)
         {
             Column = column;
         }
 
-        /// <summary>
-        /// Gets the column position at which the error occurred.
-        /// </summary>
+        internal ExpressionParseException(Reader r, string message)
+            : this(r.Position, message)
+        {
+        }
+
         public int Column { get; }
     }
 }

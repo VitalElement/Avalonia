@@ -12,7 +12,6 @@ using Perspex.Designer.Comm;
 using Perspex.Designer.InProcDesigner;
 using Perspex.Designer.Metadata;
 using Timer = System.Windows.Forms.Timer;
-using Perspex.DesignerSupport;
 
 namespace Perspex.Designer.AppHost
 {
@@ -23,7 +22,7 @@ namespace Perspex.Designer.AppHost
         private string _lastXaml;
         private string _currentXaml;
         private bool _initSuccess;
-        private readonly HostedAppModel _appModel;
+        private HostedAppModel _appModel;
         private Control _window;
 
         public PerspexAppHost(CommChannel channel)
@@ -202,7 +201,7 @@ namespace Perspex.Designer.AppHost
             log("Initializing built-in designer");
             var dic = new Dictionary<string, object>();
             Api = new DesignerApi(dic) {OnResize = OnResize, OnWindowCreated = OnWindowCreated};
-            LookupStaticMethod("Perspex.DesignerSupport.DesignerAssist", "Init").Invoke(null, new object[] {dic});
+            LookupStaticMethod("Perspex.Designer.Designer", "Init").Invoke(null, new object[] {dic});
 
             _window = new Control
             {

@@ -694,14 +694,20 @@ namespace Perspex
                 newValue,
                 priority);
 
-            property.Notifying?.Invoke(this, true);
+            if (property.Notifying != null)
+            {
+                property.Notifying(this, true);
+            }
 
             try
             {
                 OnPropertyChanged(e);
                 property.NotifyChanged(e);
 
-                PropertyChanged?.Invoke(this, e);
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, e);
+                }
 
                 if (_inpcChanged != null)
                 {
@@ -711,7 +717,10 @@ namespace Perspex
             }
             finally
             {
-                property.Notifying?.Invoke(this, false);
+                if (property.Notifying != null)
+                {
+                    property.Notifying(this, false);
+                }
             }
         }
 
@@ -857,7 +866,7 @@ namespace Perspex
         /// <returns>The description.</returns>
         private string GetDescription(PerspexProperty property)
         {
-            return $"{GetType().Name}.{property.Name}";
+            return string.Format("{0}.{1}", GetType().Name, property.Name);
         }
 
         /// <summary>

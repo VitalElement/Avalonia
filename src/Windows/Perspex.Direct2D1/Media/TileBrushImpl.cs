@@ -36,7 +36,7 @@ namespace Perspex.Direct2D1.Media
         }
 
 
-        private static BrushProperties GetBrushProperties(TileBrush brush, Rect destinationRect)
+        protected static BrushProperties GetBrushProperties(TileBrush brush, Rect destinationRect)
         {
             return new BrushProperties
             {
@@ -49,7 +49,7 @@ namespace Perspex.Direct2D1.Media
             };
         }
 
-        private static BitmapBrushProperties GetBitmapBrushProperties(TileBrush brush)
+        protected static BitmapBrushProperties GetBitmapBrushProperties(TileBrush brush)
         {
             var tileMode = brush.TileMode;
 
@@ -60,12 +60,12 @@ namespace Perspex.Direct2D1.Media
             };
         }
 
-        private static ExtendMode GetExtendModeX(TileMode tileMode)
+        protected static ExtendMode GetExtendModeX(TileMode tileMode)
         {
             return (tileMode & TileMode.FlipX) != 0 ? ExtendMode.Mirror : ExtendMode.Wrap;
         }
 
-        private static ExtendMode GetExtendModeY(TileMode tileMode)
+        protected static ExtendMode GetExtendModeY(TileMode tileMode)
         {
             return (tileMode & TileMode.FlipY) != 0 ? ExtendMode.Mirror : ExtendMode.Wrap;
         }

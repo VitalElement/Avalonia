@@ -45,8 +45,8 @@ namespace Perspex.Markup.UnitTests
 
         public class Scope : IDisposable
         {
-            private readonly SynchronizationContext _old;
-            private readonly UnitTestSynchronizationContext _new;
+            private SynchronizationContext _old;
+            private UnitTestSynchronizationContext _new;
 
             public Scope(SynchronizationContext old, UnitTestSynchronizationContext n)
             {

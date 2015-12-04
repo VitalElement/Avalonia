@@ -25,7 +25,7 @@ namespace Perspex.Markup
             var attached = Observable.FromEventPattern<VisualTreeAttachmentEventArgs>(
                 x => relativeTo.AttachedToVisualTree += x,
                 x => relativeTo.DetachedFromVisualTree += x)
-                .Select(x => ((IControl)x.Sender).FindNameScope())
+                .Select(x => x.EventArgs.NameScope)
                 .StartWith(relativeTo.FindNameScope());
 
             var detached = Observable.FromEventPattern<VisualTreeAttachmentEventArgs>(
@@ -45,12 +45,10 @@ namespace Perspex.Markup
                         .OfType<IControl>();
                     var unregistered = Observable.FromEventPattern<NameScopeEventArgs>(
                         x => nameScope.Unregistered += x,
-                        x => nameScope.Unregistered -= x)
-                        .Where(x => x.EventArgs.Name == name)
-                        .Select(_ => (IControl)null);
+                        x => nameScope.Unregistered -= x);
                     return registered
                         .StartWith(nameScope.Find<IControl>(name))
-                        .Merge(unregistered);
+                        .TakeUntil(unregistered);
                 }
                 else
                 {

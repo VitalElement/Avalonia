@@ -87,8 +87,20 @@ namespace Perspex
         /// </value>
         public DataTemplates DataTemplates
         {
-            get { return _dataTemplates ?? (_dataTemplates = new DataTemplates()); }
-            set { _dataTemplates = value; }
+            get
+            {
+                if (_dataTemplates == null)
+                {
+                    _dataTemplates = new DataTemplates();
+                }
+
+                return _dataTemplates;
+            }
+
+            set
+            {
+                _dataTemplates = value;
+            }
         }
 
         /// <summary>
@@ -193,7 +205,7 @@ namespace Perspex
         /// Initializes the rendering or windowing subsystem defined by the specified assemblt.
         /// </summary>
         /// <param name="assemblyName">The name of the assembly.</param>
-        protected static void InitializeSubsystem(string assemblyName)
+        protected void InitializeSubsystem(string assemblyName)
         {
             var assembly = Assembly.Load(new AssemblyName(assemblyName));
             var platformClassName = assemblyName.Replace("Perspex.", string.Empty) + "Platform";
@@ -201,12 +213,6 @@ namespace Perspex
             var platformClass = assembly.GetType(platformClassFullName);
             var init = platformClass.GetRuntimeMethod("Initialize", new Type[0]);
             init.Invoke(null, null);
-        }
-
-        internal static void InitializeWin32Subsystem()
-        {
-            InitializeSubsystem("Perspex.Direct2D1");
-            InitializeSubsystem("Perspex.Win32");
         }
     }
 }

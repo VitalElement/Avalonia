@@ -16,10 +16,10 @@ namespace Perspex.Markup.Data
 
         public override IDisposable Subscribe(IObserver<object> observer)
         {
-            return Next.Select(Negate).Subscribe(observer);
+            return Next.Select(x => Negate(x)).Subscribe(observer);
         }
 
-        private static object Negate(object v)
+        private object Negate(object v)
         {
             if (v != PerspexProperty.UnsetValue)
             {

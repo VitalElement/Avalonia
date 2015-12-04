@@ -10,7 +10,7 @@ namespace Perspex.Markup.UnitTests
 {
     public class TestRoot : Decorator, IRenderRoot, INameScope
     {
-        private readonly NameScope _nameScope = new NameScope();
+        private NameScope _nameScope = new NameScope();
 
         event EventHandler<NameScopeEventArgs> INameScope.Registered
         {

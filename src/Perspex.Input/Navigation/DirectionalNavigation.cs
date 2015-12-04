@@ -196,9 +196,16 @@ namespace Perspex.Input.Navigation
                 var siblings = parent.GetVisualChildren()
                     .OfType<IInputElement>()
                     .Where(FocusExtensions.CanFocusDescendents);
-                var sibling = isForward ? 
-                    siblings.SkipWhile(x => x != container).Skip(1).FirstOrDefault() : 
-                    siblings.TakeWhile(x => x != container).LastOrDefault();
+                IInputElement sibling;
+
+                if (isForward)
+                {
+                    sibling = siblings.SkipWhile(x => x != container).Skip(1).FirstOrDefault();
+                }
+                else
+                {
+                    sibling = siblings.TakeWhile(x => x != container).LastOrDefault();
+                }
 
                 if (sibling != null)
                 {

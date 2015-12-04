@@ -102,7 +102,7 @@ namespace Perspex.Controls
             PlatformImpl.Input = HandleInput;
             PlatformImpl.Resized = HandleResized;
 
-            var clientSize = ClientSize = PlatformImpl.ClientSize;
+            Size clientSize = ClientSize = PlatformImpl.ClientSize;
 
             if (LayoutManager != null)
             {
@@ -111,8 +111,16 @@ namespace Perspex.Controls
                 LayoutManager.LayoutCompleted.Subscribe(_ => HandleLayoutCompleted());
             }
 
-            _keyboardNavigationHandler?.SetOwner(this);
-            _accessKeyHandler?.SetOwner(this);
+            if (_keyboardNavigationHandler != null)
+            {
+                _keyboardNavigationHandler.SetOwner(this);
+            }
+
+            if (_accessKeyHandler != null)
+            {
+                _accessKeyHandler.SetOwner(this);
+            }
+
             styler?.ApplyStyles(this);
 
             GetObservable(ClientSizeProperty).Skip(1).Subscribe(x => PlatformImpl.ClientSize = x);
@@ -298,9 +306,12 @@ namespace Perspex.Controls
         {
             var result = resolver.GetService<T>();
 
-            System.Diagnostics.Debug.WriteLineIf(
-                result == null,
-                $"Could not create {typeof(T).Name} : maybe Application.RegisterServices() wasn't called?");
+            if (result == null)
+            {
+                System.Diagnostics.Debug.WriteLineIf(
+                    result == null,
+                    $"Could not create {typeof(T).Name} : maybe Application.RegisterServices() wasn't called?");
+            }
 
             return result;
         }
@@ -310,7 +321,10 @@ namespace Perspex.Controls
         /// </summary>
         private void HandleActivated()
         {
-            Activated?.Invoke(this, EventArgs.Empty);
+            if (Activated != null)
+            {
+                Activated(this, EventArgs.Empty);
+            }
 
             var scope = this as IFocusScope;
 
@@ -327,7 +341,10 @@ namespace Perspex.Controls
         /// </summary>
         private void HandleClosed()
         {
-            Closed?.Invoke(this, EventArgs.Empty);
+            if (Closed != null)
+            {
+                Closed(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -337,7 +354,10 @@ namespace Perspex.Controls
         {
             IsActive = false;
 
-            Deactivated?.Invoke(this, EventArgs.Empty);
+            if (Deactivated != null)
+            {
+                Deactivated(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

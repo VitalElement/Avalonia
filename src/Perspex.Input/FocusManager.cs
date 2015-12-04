@@ -182,7 +182,7 @@ namespace Perspex.Input
                 {
                     element = element.GetSelfAndVisualAncestors()
                         .OfType<IInputElement>()
-                        .FirstOrDefault(CanFocus);
+                        .FirstOrDefault(x => CanFocus(x));
                 }
 
                 if (element != null)

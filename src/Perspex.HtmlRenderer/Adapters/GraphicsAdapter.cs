@@ -42,7 +42,7 @@ namespace TheArtOfDev.HtmlRenderer.Perspex.Adapters
         #endregion
 
 
-        private readonly Stack<IDisposable> _clipStack = new Stack<IDisposable>();
+        private Stack<IDisposable> _clipStack = new Stack<IDisposable>();
 
 
         /// <summary>

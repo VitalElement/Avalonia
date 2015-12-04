@@ -25,7 +25,12 @@ namespace Perspex.Animation
         {
             get
             {
-                return _propertyTransitions ?? (_propertyTransitions = new PropertyTransitions());
+                if (_propertyTransitions == null)
+                {
+                    _propertyTransitions = new PropertyTransitions();
+                }
+
+                return _propertyTransitions;
             }
 
             set

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Perspex.Controls
+namespace Perspex
 {
     public class NameScopeEventArgs : EventArgs
     {

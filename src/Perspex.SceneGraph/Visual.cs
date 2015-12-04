@@ -272,7 +272,11 @@ namespace Perspex
             IRenderRoot root = this.GetSelfAndVisualAncestors()
                 .OfType<IRenderRoot>()
                 .FirstOrDefault();
-            root?.RenderQueueManager?.InvalidateRender(this);
+
+            if (root != null && root.RenderQueueManager != null)
+            {
+                root.RenderQueueManager.InvalidateRender(this);
+            }
         }
 
         /// <summary>
@@ -300,22 +304,13 @@ namespace Perspex
         /// of the specified <paramref name="visual"/>.
         /// </summary>
         /// <param name="visual">The visual to translate the coordinates to.</param>
-        /// <returns>
-        /// A <see cref="Matrix"/> containing the transform or null if the visuals don't share a
-        /// common ancestor.
-        /// </returns>
-        public Matrix? TransformToVisual(IVisual visual)
+        /// <returns>A <see cref="Matrix"/> containing the transform.</returns>
+        public Matrix TransformToVisual(IVisual visual)
         {
             var common = this.FindCommonVisualAncestor(visual);
-
-            if (common != null)
-            {
-                var thisOffset = GetOffsetFrom(common, this);
-                var thatOffset = GetOffsetFrom(common, visual);
-                return Matrix.CreateTranslation(-thatOffset) * Matrix.CreateTranslation(thisOffset);
-            }
-
-            return null;
+            var thisOffset = GetOffsetFrom(common, this);
+            var thatOffset = GetOffsetFrom(common, visual);
+            return Matrix.CreateTranslation(-thatOffset) * Matrix.CreateTranslation(thisOffset);
         }
 
         /// <summary>
@@ -392,17 +387,8 @@ namespace Perspex
         /// Called when the control is added to a visual tree.
         /// </summary>
         /// <param name="e">The event args.</param>
-        /// <remarks>
-        /// It is vital that if you override this method you call the base implementation;
-        /// failing to do so will cause numerous features to not work as expected.
-        /// </remarks>
         protected virtual void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
-            if (RenderTransform != null)
-            {
-                RenderTransform.Changed += RenderTransformChanged;
-            }
-
             AttachedToVisualTree?.Invoke(this, e);
         }
 
@@ -410,17 +396,8 @@ namespace Perspex
         /// Called when the control is removed from a visual tree.
         /// </summary>
         /// <param name="e">The event args.</param>
-        /// <remarks>
-        /// It is vital that if you override this method you call the base implementation;
-        /// failing to do so will cause numerous features to not work as expected.
-        /// </remarks>
         protected virtual void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
-            if (RenderTransform != null)
-            {
-                RenderTransform.Changed -= RenderTransformChanged;
-            }
-
             DetachedFromVisualTree?.Invoke(this, e);
         }
 
@@ -430,7 +407,12 @@ namespace Perspex
         /// <param name="e">The event args.</param>
         private static void AffectsRenderInvalidate(PerspexPropertyChangedEventArgs e)
         {
-            (e.Sender as Visual)?.InvalidateVisual();
+            Visual visual = e.Sender as Visual;
+
+            if (visual != null)
+            {
+                visual.InvalidateVisual();
+            }
         }
 
         /// <summary>
@@ -443,8 +425,48 @@ namespace Perspex
         /// </returns>
         private VisualTreeAttachmentEventArgs GetAttachmentEventArgs()
         {
-            var root = this.GetSelfAndVisualAncestors().OfType<IRenderRoot>().FirstOrDefault();
-            return root != null ? new VisualTreeAttachmentEventArgs(root) : null;
+            var e = (IVisual)this;
+            IRenderRoot root = null;
+            INameScope nameScope = null;
+
+            while (e != null)
+            {
+                if (nameScope == null)
+                {
+                    nameScope = e as INameScope ?? NameScope.GetNameScope((Visual)e);
+                }
+
+                root = e as IRenderRoot;
+
+                if (root != null)
+                {
+                    return new VisualTreeAttachmentEventArgs(root, nameScope);
+                }
+
+                e = e.VisualParent;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="VisualTreeAttachmentEventArgs"/> for this element based on the 
+        /// parent's args.
+        /// </summary>
+        /// <param name="e">The parent args.</param>
+        /// <returns>The args for this element.</returns>
+        private VisualTreeAttachmentEventArgs GetAttachmentEventArgs(VisualTreeAttachmentEventArgs e)
+        {
+            var childNameScope = (this as INameScope) ?? NameScope.GetNameScope(this);
+
+            if (childNameScope != null)
+            {
+                return new VisualTreeAttachmentEventArgs(e.Root, childNameScope);
+            }
+            else
+            {
+                return e;
+            }
         }
 
         /// <summary>
@@ -502,7 +524,7 @@ namespace Perspex
         {
             var sender = e.Sender as Visual;
 
-            if (sender?._isAttachedToVisualTree == true)
+            if (sender != null)
             {
                 var oldValue = e.OldValue as Transform;
                 var newValue = e.NewValue as Transform;
@@ -538,14 +560,7 @@ namespace Perspex
         /// <param name="value">The visual parent.</param>
         private void SetVisualParent(Visual value)
         {
-            if (_visualParent == value)
-            {
-                return;
-            }
-            
-            var old = _visualParent;
-
-            if (_isAttachedToVisualTree)
+            if (_visualParent != value)
             {
                 var oldArgs = GetAttachmentEventArgs();
 
@@ -555,23 +570,16 @@ namespace Perspex
                 {
                     NotifyDetachedFromVisualTree(oldArgs);
                 }
-            }
-            else
-            {
-                _visualParent = value;
-            }
 
-            if (_visualParent is IRenderRoot || _visualParent?.IsAttachedToVisualTree == true)
-            {
                 var newArgs = GetAttachmentEventArgs();
 
                 if (newArgs != null)
                 {
                     NotifyAttachedToVisualTree(newArgs);
                 }
-            }
 
-            RaisePropertyChanged(VisualParentProperty, old, value, BindingPriority.LocalValue);
+                RaisePropertyChanged(VisualParentProperty, oldArgs, value, BindingPriority.LocalValue);
+            }
         }
 
         /// <summary>
@@ -614,13 +622,19 @@ namespace Perspex
 
             _isAttachedToVisualTree = true;
 
+            if (Name != null && e.NameScope != null)
+            {
+                e.NameScope.Register(Name, this);
+            }
+
             OnAttachedToVisualTree(e);
 
             if (_visualChildren != null)
             {
                 foreach (Visual child in _visualChildren.OfType<Visual>())
                 {
-                    child.NotifyAttachedToVisualTree(e);
+                    var ce = child.GetAttachmentEventArgs(e);
+                    child.NotifyAttachedToVisualTree(ce);
                 }
             }
         }
@@ -634,6 +648,11 @@ namespace Perspex
         {
             _visualLogger.Verbose("Detached from visual tree");
 
+            if (Name != null && e.NameScope != null)
+            {
+                e.NameScope.Unregister(Name);
+            }
+
             _isAttachedToVisualTree = false;
             OnDetachedFromVisualTree(e);
 
@@ -641,7 +660,8 @@ namespace Perspex
             {
                 foreach (Visual child in _visualChildren.OfType<Visual>())
                 {
-                    child.NotifyDetachedFromVisualTree(e);
+                    var ce = child.GetAttachmentEventArgs(e);
+                    child.NotifyDetachedFromVisualTree(ce);
                 }
             }
         }

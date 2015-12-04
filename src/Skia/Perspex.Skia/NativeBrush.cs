@@ -69,7 +69,7 @@ namespace Perspex.Skia
         private readonly NativeBrushPool _pool;
         public NativeBrush* Brush;
 
-        readonly List<IDisposable> _disposables = new List<IDisposable>();
+        List<IDisposable> _disposables = new List<IDisposable>();
 
         public NativeBrushContainer(NativeBrushPool pool)
         {
@@ -96,7 +96,7 @@ namespace Perspex.Skia
     class NativeBrushPool
     {
         public static NativeBrushPool Instance { get; } = new NativeBrushPool();
-        readonly Stack<NativeBrushContainer> _pool = new Stack<NativeBrushContainer>();
+        Stack<NativeBrushContainer> _pool = new Stack<NativeBrushContainer>();
 
         public void Return(NativeBrushContainer c)
         {

@@ -251,15 +251,18 @@
 
     public struct Alignments
     {
+        private readonly Alignment _horizontal;
+        private readonly Alignment _vertical;
+
         public Alignments(Alignment horizontal, Alignment vertical)
         {
-            Horizontal = horizontal;
-            Vertical = vertical;
+            _horizontal = horizontal;
+            _vertical = vertical;
         }
 
-        public Alignment Horizontal { get; }
+        public Alignment Horizontal => _horizontal;
 
-        public Alignment Vertical { get; }
+        public Alignment Vertical => _vertical;
     }
 
     public static class CoordinateMixin

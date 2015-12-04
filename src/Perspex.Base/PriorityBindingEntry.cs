@@ -99,7 +99,10 @@ namespace Perspex
         /// </summary>
         public void Dispose()
         {
-            _subscription?.Dispose();
+            if (_subscription != null)
+            {
+                _subscription.Dispose();
+            }
         }
     }
 }

@@ -18,7 +18,10 @@ namespace Perspex.Styling
                 .FirstOrDefault();
             IGlobalStyles global = PerspexLocator.Current.GetService<IGlobalStyles>();
 
-            global?.Styles.Attach(control, null);
+            if (global != null)
+            {
+                global.Styles.Attach(control, null);
+            }
 
             if (styleContainer != null)
             {
@@ -31,11 +34,19 @@ namespace Perspex.Styling
             Contract.Requires<ArgumentNullException>(control != null);
             Contract.Requires<ArgumentNullException>(container != null);
 
-            var parentContainer = container.StylingParent;
+            IVisual visual = container as IVisual;
 
-            if (parentContainer != null)
+            if (visual != null)
             {
-                ApplyStyles(control, parentContainer);
+                IStyleHost parentContainer = visual
+                    .GetVisualAncestors()
+                    .OfType<IStyleHost>()
+                    .FirstOrDefault();
+
+                if (parentContainer != null)
+                {
+                    ApplyStyles(control, parentContainer);
+                }
             }
 
             container.Styles.Attach(control, container);

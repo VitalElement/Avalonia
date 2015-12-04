@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Perspex.Controls
+namespace Perspex
 {
     /// <summary>
     /// Implements a name scope.
@@ -15,7 +15,7 @@ namespace Perspex.Controls
         /// Defines the NameScope attached property.
         /// </summary>
         public static readonly PerspexProperty<INameScope> NameScopeProperty =
-            PerspexProperty.RegisterAttached<NameScope, Control, INameScope>("NameScope");
+            PerspexProperty.RegisterAttached<NameScope, Visual, INameScope>("NameScope");
 
         private readonly Dictionary<string, object> _inner = new Dictionary<string, object>();
 
@@ -34,7 +34,7 @@ namespace Perspex.Controls
         /// </summary>
         /// <param name="visual">The visual.</param>
         /// <returns>The value of the NameScope attached property.</returns>
-        public static INameScope GetNameScope(Control visual)
+        public static INameScope GetNameScope(Visual visual)
         {
             return visual.GetValue(NameScopeProperty);
         }
@@ -44,7 +44,7 @@ namespace Perspex.Controls
         /// </summary>
         /// <param name="visual">The visual.</param>
         /// <param name="value">The value to set.</param>
-        public static void SetNameScope(Control visual, INameScope value)
+        public static void SetNameScope(Visual visual, INameScope value)
         {
             visual.SetValue(NameScopeProperty, value);
         }
@@ -102,7 +102,7 @@ namespace Perspex.Controls
             if (_inner.TryGetValue(name, out element))
             {
                 _inner.Remove(name);
-                Unregistered?.Invoke(this, new NameScopeEventArgs(name, element));
+                Registered?.Invoke(this, new NameScopeEventArgs(name, element));
             }
         }
     }

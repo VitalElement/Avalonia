@@ -54,20 +54,26 @@ namespace Perspex.Input
             {
                 var interactive = FocusedElement as IInteractive;
 
-                interactive?.RaiseEvent(new RoutedEventArgs
+                if (interactive != null)
                 {
-                    RoutedEvent = InputElement.LostFocusEvent,
-                });
+                    interactive.RaiseEvent(new RoutedEventArgs
+                    {
+                        RoutedEvent = InputElement.LostFocusEvent,
+                    });
+                }
 
                 FocusedElement = element;
                 interactive = element as IInteractive;
 
-                interactive?.RaiseEvent(new GotFocusEventArgs
+                if (interactive != null)
                 {
-                    RoutedEvent = InputElement.GotFocusEvent,
-                    NavigationMethod = method,
-                    InputModifiers = modifiers,
-                });
+                    interactive.RaiseEvent(new GotFocusEventArgs
+                    {
+                        RoutedEvent = InputElement.GotFocusEvent,
+                        NavigationMethod = method,
+                        InputModifiers = modifiers,
+                    });
+                }
             }
         }
 

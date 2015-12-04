@@ -14,7 +14,15 @@ namespace Perspex.Markup.Xaml.Templates
         {
             // TODO: Handle nested property paths, changing values etc.
             var property = o.GetType().GetRuntimeProperty(MemberName);
-            return property?.GetValue(o);
+
+            if (property != null)
+            {
+                return property.GetValue(o);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

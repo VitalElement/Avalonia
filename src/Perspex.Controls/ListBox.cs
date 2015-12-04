@@ -29,7 +29,10 @@ namespace Perspex.Controls
             SelectingItemsControl.SelectionModeProperty;
 
         /// <inheritdoc/>
-        public new IList SelectedItems => base.SelectedItems;
+        public new IList SelectedItems
+        {
+            get { return base.SelectedItems; }
+        }
 
         /// <inheritdoc/>
         public new SelectionMode SelectionMode

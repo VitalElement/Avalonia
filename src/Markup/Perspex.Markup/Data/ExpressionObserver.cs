@@ -172,8 +172,6 @@ namespace Perspex.Markup.Data
         /// <summary>
         /// Causes the root object to be re-read from the root getter.
         /// </summary>
-        /// TODO: Instead of doing this, make the object accept an "update" observable
-        /// as doing it this way can cause a leak in Binding.
         public void UpdateRoot()
         {
             if (_count > 0 && _rootGetter != null)
@@ -182,9 +180,9 @@ namespace Perspex.Markup.Data
                 {
                     _node.Target = _rootGetter();
                 }
-                else
+                else if (_empty != null)
                 {
-                    _empty?.OnNext(_rootGetter());
+                    _empty.OnNext(_rootGetter());
                 }
             }
         }

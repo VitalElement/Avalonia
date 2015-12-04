@@ -250,7 +250,10 @@ namespace Perspex.Controls.Primitives
         {
             LogicalChildren.Clear();
 
-            ((ISetLogicalParent)e.OldValue)?.SetParent(null);
+            if (e.OldValue != null)
+            {
+                ((ISetLogicalParent)e.OldValue).SetParent(null);
+            }
 
             if (e.NewValue != null)
             {
@@ -266,11 +269,10 @@ namespace Perspex.Controls.Primitives
         private Point GetPosition()
         {
             var target = PlacementTarget ?? this.GetVisualParent<Control>();
+            Point point;
 
             if (target != null)
             {
-                Point point;
-
                 switch (PlacementMode)
                 {
                     case PlacementMode.Bottom:

@@ -15,7 +15,7 @@ namespace Perspex.Markup.Xaml.Context
 {
     public class PerspexContentPropertyProvider : IContentPropertyProvider
     {
-        private readonly Dictionary<Type, string> _values = new Dictionary<Type, string>();
+        private Dictionary<Type, string> _values = new Dictionary<Type, string>();
 
         public string GetContentPropertyName(Type type)
         {

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Perspex.Controls
+namespace Perspex
 {
     /// <summary>
     /// Defines a name scope.

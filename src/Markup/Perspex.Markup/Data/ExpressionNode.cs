@@ -63,7 +63,10 @@ namespace Perspex.Markup.Data
                     Next.Target = value;
                 }
 
-                _subject?.OnNext(value);
+                if (_subject != null)
+                {
+                    _subject.OnNext(value);
+                }
             }
         }
 

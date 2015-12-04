@@ -28,7 +28,15 @@
         private static DashStyle dot;
         public static DashStyle Dot
         {
-            get { return dot ?? (dot = new DashStyle(new double[] {0, 2}, 0)); }
+            get
+            {
+                if (dot == null)
+                {
+                    dot = new DashStyle(new double[] { 0, 2 }, 0);
+                }
+
+                return dot;
+            }
         }
 
         private static DashStyle dashDot;

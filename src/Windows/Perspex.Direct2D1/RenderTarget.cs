@@ -30,6 +30,8 @@ namespace Perspex.Direct2D1
         /// Initializes a new instance of the <see cref="RenderTarget"/> class.
         /// </summary>
         /// <param name="hwnd">The window handle.</param>
+        /// <param name="width">The width of the window.</param>
+        /// <param name="height">The height of the window.</param>
         public RenderTarget(IntPtr hwnd)
         {
             _hwnd = hwnd;

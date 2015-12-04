@@ -36,7 +36,7 @@ namespace Perspex
 
         public class RegistrationHelper<TService>
         {
-            private readonly PerspexLocator _locator;
+            private PerspexLocator _locator;
 
             public RegistrationHelper(PerspexLocator locator)
             {

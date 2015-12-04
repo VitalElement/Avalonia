@@ -55,9 +55,9 @@ namespace Perspex.Controls
         public static readonly PerspexProperty<string> TitleProperty =
             PerspexProperty.Register<Window, string>(nameof(Title), "Window");
 
-        private readonly NameScope _nameScope = new NameScope();
+        private NameScope _nameScope = new NameScope();
         private object _dialogResult;
-        private readonly Size _maxPlatformClientSize;
+        private Size _maxPlatformClientSize;
 
         /// <summary>
         /// Initializes static members of the <see cref="Window"/> class.

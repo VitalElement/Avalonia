@@ -22,7 +22,10 @@ namespace Perspex.Reactive
         /// <param name="description">The description of the observable.</param>
         public PerspexObservable(Func<IObserver<T>, IDisposable> subscribe, string description)
         {
-            Contract.Requires<ArgumentNullException>(subscribe != null);            
+            if (subscribe == null)
+            {
+                throw new ArgumentNullException("subscribe");
+            }
 
             _subscribe = subscribe;
             Description = description;

@@ -147,7 +147,11 @@ namespace Perspex.Styling
 
         private void RaiseChanged(NotifyCollectionChangedEventArgs e)
         {
-            CollectionChanged?.Invoke(this, e);
+            if (CollectionChanged != null)
+            {
+                CollectionChanged(this, e);
+            }
+
             _changed.OnNext(e);
             _afterChanged.OnNext(e);
         }

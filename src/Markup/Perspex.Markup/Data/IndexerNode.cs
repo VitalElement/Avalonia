@@ -12,7 +12,7 @@ namespace Perspex.Markup.Data
 {
     internal class IndexerNode : ExpressionNode
     {
-        private readonly int[] _intArgs;
+        private int[] _intArgs;
 
         public IndexerNode(IList<object> arguments)
         {

@@ -214,28 +214,22 @@ namespace Perspex.Markup.Xaml.Data
         {
             Contract.Requires<ArgumentNullException>(target != null);
 
-            if (!targetIsDataContext)
+            var dataContextHost = targetIsDataContext ?
+                target.InheritanceParent as IObservablePropertyBag : target;
+
+            if (dataContextHost != null)
             {
                 var result = new ExpressionObserver(
-                    () => target.GetValue(Control.DataContextProperty),
+                    () => dataContextHost.GetValue(Control.DataContextProperty),
                     path);
-
-                /// TODO: Instead of doing this, make the ExpressionObserver accept an "update"
-                /// observable as doing it this way can will cause a leak in Binding as this 
-                /// observable is never unsubscribed.
-                target.GetObservable(Control.DataContextProperty).Subscribe(x =>
+                dataContextHost.GetObservable(Control.DataContextProperty).Subscribe(x =>
                     result.UpdateRoot());
-
                 return result;
             }
             else
             {
-                return new ExpressionObserver(
-                    target.GetObservable(Visual.VisualParentProperty)
-                          .OfType<IObservablePropertyBag>()
-                          .Select(x => x.GetObservable(Control.DataContextProperty))
-                          .Switch(),
-                    path);
+                throw new InvalidOperationException(
+                    "Cannot bind to DataContext of object with no parent.");
             }
         }
 

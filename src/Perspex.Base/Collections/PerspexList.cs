@@ -437,7 +437,10 @@ namespace Perspex.Collections
         /// </summary>
         private void NotifyCountChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Count"));
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Count"));
+            }
         }
 
         /// <summary>
@@ -466,9 +469,14 @@ namespace Perspex.Collections
             {
                 NotifyCollectionChangedEventArgs e;
 
-                e = ResetBehavior == ResetBehavior.Reset ? 
-                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset) : 
-                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, t, 0);
+                if (ResetBehavior == ResetBehavior.Reset)
+                {
+                    e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
+                }
+                else
+                {
+                    e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, t, 0);
+                }
 
                 CollectionChanged(this, e);
             }

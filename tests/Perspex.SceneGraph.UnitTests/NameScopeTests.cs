@@ -4,7 +4,7 @@
 using System;
 using Xunit;
 
-namespace Perspex.Controls.UnitTests
+namespace Perspex.SceneGraph.UnitTests
 {
     public class NameScopeTests
     {
