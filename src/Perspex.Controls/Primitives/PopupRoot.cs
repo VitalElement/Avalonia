@@ -44,7 +44,6 @@ namespace Perspex.Controls.Primitives
         public PopupRoot(IPerspexDependencyResolver dependencyResolver)
             : base(PlatformManager.CreatePopup(), dependencyResolver)
         {
-            GetObservable(ParentProperty).Subscribe(x => InheritanceParent = (PerspexObject)x);
         }
 
         /// <summary>

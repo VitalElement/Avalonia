@@ -266,6 +266,7 @@ namespace Perspex.Controls
                     throw new InvalidOperationException("The Control already has a parent.");
                 }
 
+                InheritanceParent = parent as PerspexObject;
                 SetAndRaise(ParentProperty, ref _parent, (IControl)parent);
             }
         }

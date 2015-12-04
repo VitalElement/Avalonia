@@ -20,8 +20,6 @@ namespace Perspex.SceneGraph.UnitTests
 
     public class TestVisual : Visual
     {
-        public new PerspexObject InheritanceParent => base.InheritanceParent;
-
         public IVisual Child
         {
             get

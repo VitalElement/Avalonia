@@ -22,6 +22,29 @@ namespace Perspex.Controls.UnitTests
         }
 
         [Fact]
+        public void LogicalParent_Should_Be_Set_To_Parent()
+        {
+            var parent = new Decorator();
+            var target = new TestControl();
+
+            parent.Child = target;
+
+            Assert.Equal(parent, target.InheritanceParent);
+        }
+
+        [Fact]
+        public void LogicalParent_Should_Be_Cleared_When_Removed_From_Parent()
+        {
+            var parent = new Decorator();
+            var target = new TestControl();
+
+            parent.Child = target;
+            parent.Child = null;
+
+            Assert.Null(target.InheritanceParent);
+        }
+
+        [Fact]
         public void Adding_Control_To_IRenderRoot_Should_Style_Control()
         {
             using (PerspexLocator.EnterScope())
@@ -90,6 +113,11 @@ namespace Perspex.Controls.UnitTests
             {
                 throw new NotImplementedException();
             }
+        }
+
+        private class TestControl : Control
+        {
+            public new PerspexObject InheritanceParent => base.InheritanceParent;
         }
     }
 }
