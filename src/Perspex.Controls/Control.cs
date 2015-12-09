@@ -398,6 +398,8 @@ namespace Perspex.Controls
             {
                 _nameScope?.Unregister(Name);
             }
+
+            this.TemplatedParent = null;
         }
 
         /// <summary>
