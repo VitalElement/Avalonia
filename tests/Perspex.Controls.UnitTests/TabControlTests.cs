@@ -37,39 +37,12 @@ namespace Perspex.Controls.UnitTests
 
             target.ApplyTemplate();
 
+            Assert.Equal(0, target.SelectedIndex);
             Assert.Equal(selected, target.SelectedItem);
-            Assert.Equal(selected, target.SelectedTab);
         }
 
         [Fact]
-        public void Setting_SelectedItem_Should_Set_SelectedTab()
-        {
-            var target = new TabControl
-            {
-                Template = new FuncControlTemplate<TabControl>(CreateTabControlTemplate),
-                Items = new[]
-                {
-                    new TabItem
-                    {
-                        Name = "first",
-                        Content = "foo",
-                    },
-                    new TabItem
-                    {
-                        Name = "second",
-                        Content = "bar",
-                    },
-                }
-            };
-
-            target.ApplyTemplate();
-            target.SelectedItem = target.Items.Cast<TabItem>().ElementAt(1);
-
-            Assert.Same(target.SelectedTab, target.SelectedItem);
-        }
-
-        [Fact]
-        public void Logical_Child_Should_Be_Selected_Tab_Content()
+        public void Logical_Children_Should_Be_TabStrip_And_Carousel()
         {
             var target = new TabControl
             {
@@ -89,8 +62,10 @@ namespace Perspex.Controls.UnitTests
 
             target.ApplyTemplate();
 
-            Assert.Equal(1, target.GetLogicalChildren().Count());
-            Assert.Equal("foo", ((TextBlock)target.GetLogicalChildren().First()).Text);
+            var logicalChildren = target.GetLogicalChildren().ToList();
+            Assert.Equal(2, logicalChildren.Count);
+            Assert.IsType<TabStrip>(logicalChildren[0]);
+            Assert.IsType<Carousel>(logicalChildren[1]);
         }
 
         [Fact]
@@ -127,7 +102,6 @@ namespace Perspex.Controls.UnitTests
 
             // compare with former [2] now [1] == "3rd"
             Assert.Same(collection[1], target.SelectedItem);
-            Assert.Same(target.SelectedTab, target.SelectedItem);
         }
 
         [Fact]
@@ -155,23 +129,25 @@ namespace Perspex.Controls.UnitTests
 
             target.ApplyTemplate();
 
-            var dataContext = ((TextBlock)target.GetLogicalChildren().Single()).DataContext;
+            var carousel = target.GetLogicalChildren().OfType<Carousel>().Single();
+
+            var dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal(items[0], dataContext);
 
             target.SelectedIndex = 1;
-            dataContext = ((Button)target.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((Button)carousel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal(items[1], dataContext);
 
             target.SelectedIndex = 2;
-            dataContext = ((TextBlock)target.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Base", dataContext);
 
             target.SelectedIndex = 3;
-            dataContext = ((TextBlock)target.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Qux", dataContext);
 
             target.SelectedIndex = 4;
-            dataContext = ((TextBlock)target.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Base", dataContext);
         }
 
@@ -183,18 +159,18 @@ namespace Perspex.Controls.UnitTests
                 {
                     new TabStrip
                     {
-                        Name = "tabStrip",
+                        Name = "PART_TabStrip",
                         Template = new FuncControlTemplate<TabStrip>(CreateTabStripTemplate),
-                        [!ItemsControl.ItemsProperty] = parent[!ItemsControl.ItemsProperty],
-                        [!!TabStrip.SelectedTabProperty] = parent[!!TabControl.SelectedTabProperty]
+                        [!TabStrip.ItemsProperty] = parent[!TabControl.ItemsProperty],
+                        [!!TabStrip.SelectedIndexProperty] = parent[!!TabControl.SelectedIndexProperty]
                     },
                     new Carousel
                     {
-                        Name = "carousel",
+                        Name = "PART_Carousel",
                         Template = new FuncControlTemplate<Carousel>(CreateCarouselTemplate),
                         MemberSelector = parent.ContentSelector,
-                        [!ItemsControl.ItemsProperty] = parent[!ItemsControl.ItemsProperty],
-                        [!SelectingItemsControl.SelectedItemProperty] = parent[!SelectingItemsControl.SelectedItemProperty],
+                        [!Carousel.ItemsProperty] = parent[!TabControl.ItemsProperty],
+                        [!Carousel.SelectedItemProperty] = parent[!TabControl.SelectedItemProperty],
                     }
                 }
             };
@@ -204,7 +180,7 @@ namespace Perspex.Controls.UnitTests
         {
             return new ItemsPresenter
             {
-                Name = "itemsPresenter",
+                Name = "PART_ItemsPresenter",
                 [~ItemsPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
             };
         }
@@ -213,7 +189,7 @@ namespace Perspex.Controls.UnitTests
         {
             return new CarouselPresenter
             {
-                Name = "itemsPresenter",
+                Name = "PART_ItemsPresenter",
                 [!CarouselPresenter.ItemsProperty] = control[!ItemsControl.ItemsProperty],
                 [!CarouselPresenter.ItemsPanelProperty] = control[!ItemsControl.ItemsPanelProperty],
                 [!CarouselPresenter.MemberSelectorProperty] = control[!ItemsControl.MemberSelectorProperty],
