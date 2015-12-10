@@ -98,7 +98,7 @@ namespace Perspex.Controls.Primitives
         /// </summary>
         public SelectingItemsControl()
         {
-            ItemContainerGenerator.ContainersInitialized.Subscribe(ContainersInitialized);
+            ItemContainerGenerator?.ContainersInitialized.Subscribe(ContainersInitialized);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace Perspex.Controls.Primitives
             bool rangeModifier = false,
             bool toggleModifier = false)
         {
-            var index = ItemContainerGenerator.IndexFromContainer(container);
+            var index = ItemContainerGenerator?.IndexFromContainer(container) ?? -1;
 
             if (index != -1)
             {
@@ -626,7 +626,7 @@ namespace Perspex.Controls.Primitives
         /// <param name="selected">Whether the item should be selected or deselected.</param>
         private void MarkItemSelected(int index, bool selected)
         {
-            var container = ItemContainerGenerator.ContainerFromIndex(index);
+            var container = ItemContainerGenerator?.ContainerFromIndex(index);
 
             if (container != null)
             {
@@ -656,6 +656,8 @@ namespace Perspex.Controls.Primitives
         /// <param name="e">The event args.</param>
         private void SelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            var generator = ItemContainerGenerator;
+
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -681,9 +683,12 @@ namespace Perspex.Controls.Primitives
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    foreach (var item in ItemContainerGenerator.Containers)
+                    if (generator != null)
                     {
-                        MarkContainerSelected(item, false);
+                        foreach (var item in generator.Containers)
+                        {
+                            MarkContainerSelected(item, false);
+                        }
                     }
 
                     if (!_syncingSelectedItems)

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See licence.md file in the project root for full license information.
 
 using Perspex.Animation;
+using Perspex.Controls.Generators;
 using Perspex.Controls.Primitives;
 using Perspex.Controls.Templates;
 
@@ -58,6 +59,15 @@ namespace Perspex.Controls
         {
             get { return GetValue(TabStripPlacementProperty); }
             set { SetValue(TabStripPlacementProperty, value); }
+        }
+
+        protected override IItemContainerGenerator CreateItemContainerGenerator()
+        {
+            // TabControl doesn't actually create items - instead its TabStrip and Carousel
+            // children create the items. However we want it to be a SelectingItemsControl
+            // so that it has the Items/SelectedItem etc properties. In this case, we can
+            // return a null ItemContainerGenerator to disable the creation of item containers.
+            return null;
         }
 
         protected override void OnTemplateApplied(INameScope nameScope)
