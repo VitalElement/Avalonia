@@ -2,7 +2,8 @@
 // Licensed under the MIT license. See licence.md file in the project root for full license information.
 
 using System;
-using Perspex.Collections;
+using System.Linq;
+using System.Reactive.Linq;
 using Perspex.Controls.Presenters;
 using Perspex.Controls.Primitives;
 using Perspex.Controls.Templates;
@@ -14,7 +15,7 @@ namespace Perspex.Controls
     /// <summary>
     /// Displays <see cref="Content"/> according to a <see cref="FuncDataTemplate"/>.
     /// </summary>
-    public class ContentControl : TemplatedControl, IContentControl, IReparentingHost
+    public class ContentControl : TemplatedControl, IContentControl
     {
         /// <summary>
         /// Defines the <see cref="Content"/> property.
@@ -34,18 +35,14 @@ namespace Perspex.Controls
         public static readonly PerspexProperty<VerticalAlignment> VerticalContentAlignmentProperty =
             PerspexProperty.Register<ContentControl, VerticalAlignment>(nameof(VerticalContentAlignment));
 
+        private IDisposable _presenterSubscription;
+
         /// <summary>
         /// Initializes static members of the <see cref="Button"/> class.
         /// </summary>
         static ContentControl()
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentControl"/> class.
-        /// </summary>
-        public ContentControl()
-        {
+            ContentProperty.Changed.AddClassHandler<ContentControl>(x => x.ContentChanged);
         }
 
         /// <summary>
@@ -85,24 +82,6 @@ namespace Perspex.Controls
             set { SetValue(VerticalContentAlignmentProperty, value); }
         }
 
-        /// <summary>
-        /// Gets a writeable logical children collection from the host.
-        /// </summary>
-        IPerspexList<ILogical> IReparentingHost.LogicalChildren => LogicalChildren;
-
-        /// <summary>
-        /// Asks the control whether it wants to reparent the logical children of the specified
-        /// control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <returns>
-        /// True if the control wants to reparent its logical children otherwise false.
-        /// </returns>
-        bool IReparentingHost.WillReparentChildrenOf(IControl control)
-        {
-            return control is IContentPresenter && control.TemplatedParent == this;
-        }
-
         /// <inheritdoc/>
         protected override void OnTemplateApplied(INameScope nameScope)
         {
@@ -110,6 +89,67 @@ namespace Perspex.Controls
             // useful for e.g. a simple ToggleButton that displays an image. There's no need to
             // have a ContentPresenter in the visual tree for that.
             Presenter = nameScope.Find<ContentPresenter>("PART_ContentPresenter");
+            _presenterSubscription = Presenter?
+                .GetObservable(ContentPresenter.ChildProperty)
+                .Subscribe(PresenterChildChanged);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTemplateChanged(PerspexPropertyChangedEventArgs e)
+        {
+            base.OnTemplateChanged(e);
+
+            if (_presenterSubscription != null)
+            {
+                _presenterSubscription.Dispose();
+                _presenterSubscription = null;
+            }
+        }
+
+        /// <summary>
+        /// Called when the <see cref="Content"/> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        private void ContentChanged(PerspexPropertyChangedEventArgs e)
+        {
+            UpdateLogicalChild(e.OldValue, e.NewValue);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="Content"/> property changes.
+        /// </summary>
+        /// <param name="oldValue">The old Content value.</param>
+        /// <param name="newValue">The new Content value.</param>
+        private void UpdateLogicalChild(object oldValue, object newValue)
+        {
+            if (oldValue != newValue)
+            {
+                var logical = oldValue as ILogical;
+
+                if (logical != null && logical.LogicalParent == this)
+                {
+                    ((ISetLogicalParent)logical).SetParent(null);
+                    this.LogicalChildren.Remove(logical);
+                }
+
+                logical = newValue as ILogical;
+
+                if (logical != null && logical.LogicalParent == null)
+                {
+                    ((ISetLogicalParent)logical).SetParent(this);
+                    this.LogicalChildren.Add(logical);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when the <see cref="Presenter"/>'s <see cref="ContentPresenter.Child"/> 
+        /// property changes.
+        /// </summary>
+        /// <param name="child">The new child.</param>
+        private void PresenterChildChanged(IControl child)
+        {
+            UpdateLogicalChild(this.LogicalChildren.FirstOrDefault(), child);
         }
     }
 }

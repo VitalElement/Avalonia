@@ -101,13 +101,9 @@ namespace Perspex.Controls.Presenters
             var old = Child;
             var content = Content;
             var result = this.MaterializeDataTemplate(content);
-            var logicalHost = this.FindReparentingHost();
-            var logicalChildren = logicalHost?.LogicalChildren ?? LogicalChildren;
 
             if (old != null)
             {
-                ((ISetLogicalParent)old).SetParent(null);
-                logicalChildren.Remove(old);
                 ClearVisualChildren();
             }
 
@@ -120,14 +116,7 @@ namespace Perspex.Controls.Presenters
                     result.DataContext = content;
                 }
 
-                if (result.Parent == null)
-                {
-                    ((ISetLogicalParent)result).SetParent((ILogical)logicalHost ?? this);
-                }
-
                 AddVisualChild(result);
-                logicalChildren.Remove(old);
-                logicalChildren.Add(result);
             }
 
             _createdChild = true;
