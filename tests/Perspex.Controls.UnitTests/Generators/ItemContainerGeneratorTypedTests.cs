@@ -19,8 +19,7 @@ namespace Perspex.Controls.UnitTests.Generators
             var result = containers
                 .OfType<ListBoxItem>()
                 .Select(x => x.Content)
-                .OfType<TextBlock>()
-                .Select(x => x.Text).ToList();
+                .ToList();
 
             Assert.Equal(items, result);
         }
