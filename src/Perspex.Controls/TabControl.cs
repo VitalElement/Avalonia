@@ -19,8 +19,17 @@ namespace Perspex.Controls
         public static readonly PerspexProperty<IPageTransition> TransitionProperty =
             Carousel.TransitionProperty.AddOwner<TabControl>();
 
-        private static readonly IMemberSelector s_contentSelector =
+        /// <summary>
+        /// Defines an <see cref="IMemberSelector"/> that selects the content of a <see cref="TabItem"/>.
+        /// </summary>
+        public static readonly IMemberSelector ContentSelector =
             new FuncMemberSelector<object, object>(SelectContent);
+
+        /// <summary>
+        /// Defines an <see cref="IMemberSelector"/> that selects the header of a <see cref="TabItem"/>.
+        /// </summary>
+        public static readonly IMemberSelector HeaderSelector =
+            new FuncMemberSelector<object, object>(SelectHeader);
 
         /// <summary>
         /// Defines the <see cref="TabStripPlacement"/> property.
@@ -39,9 +48,22 @@ namespace Perspex.Controls
         }
 
         /// <summary>
-        /// Gets an <see cref="IMemberSelector"/> that selects the content of a <see cref="TabItem"/>.
+        /// Gets the content portion of the <see cref="TabControl"/>.
         /// </summary>
-        public IMemberSelector ContentSelector => s_contentSelector;
+        public IControl Content
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the tab strip portion of the <see cref="TabControl"/>.
+        /// </summary>
+        public IControl TabStrip
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets or sets the transition to use when switching tabs.
@@ -74,19 +96,19 @@ namespace Perspex.Controls
         {
             base.OnTemplateApplied(nameScope);
 
-            var carousel = nameScope.Find<ILogical>("PART_Carousel");
-            var tabStrip = nameScope.Find<SelectingItemsControl>("PART_TabStrip");
+            TabStrip = nameScope.Find<IControl>("PART_TabStrip");
+            Content = nameScope.Find<IControl>("PART_Content");
 
             this.LogicalChildren.Clear();
 
-            if (tabStrip != null)
+            if (TabStrip != null)
             {
-                this.LogicalChildren.Add(tabStrip);
+                this.LogicalChildren.Add(TabStrip);
             }
 
-            if (carousel != null)
+            if (Content != null)
             {
-                this.LogicalChildren.Add(carousel);
+                this.LogicalChildren.Add(Content);
             }
         }
 
@@ -107,6 +129,34 @@ namespace Perspex.Controls
             {
                 return o;
             }       
+        }
+
+        /// <summary>
+        /// Selects the header of a tab item.
+        /// </summary>
+        /// <param name="o">The tab item.</param>
+        /// <returns>The content.</returns>
+        private static object SelectHeader(object o)
+        {
+            var headered = o as IHeadered;
+            var control = o as IControl;
+
+            if (headered != null)
+            {
+                return headered.Header;
+            }
+            else if (control != null)
+            {
+                // Non-headered control items should result in TabStripItems with empty content.
+                // If a TabStrip is created with non IHeadered controls as its items, don't try to
+                // display the control in the TabStripItem: the content portion will also try to 
+                // display this control, resulting in dual-parentage breakage.
+                return string.Empty;
+            }
+            else
+            {
+                return o;
+            }
         }
     }
 }

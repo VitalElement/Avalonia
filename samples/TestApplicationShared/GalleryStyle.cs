@@ -98,6 +98,7 @@ namespace TestApplication
                             {
                                 ItemsPanel = new FuncTemplate<IPanel>(() => new StackPanel { Orientation = Orientation.Vertical, Gap = 4 }),
                                 Margin = new Thickness(0, 10, 0, 0),
+                                MemberSelector = TabControl.HeaderSelector,
                                 Name = "internalStrip",
                                 [!ItemsControl.ItemsProperty] = control[!ItemsControl.ItemsProperty],
                                 [!!SelectingItemsControl.SelectedItemProperty] = control[!!SelectingItemsControl.SelectedItemProperty],
@@ -107,7 +108,7 @@ namespace TestApplication
                     new Carousel
                     {
                         Name = "carousel",
-                        MemberSelector = control.ContentSelector,
+                        MemberSelector = TabControl.ContentSelector,
                         [~Carousel.TransitionProperty] = control[~TabControl.TransitionProperty],
                         [!Carousel.ItemsProperty] = control[!ItemsControl.ItemsProperty],
                         [!Carousel.SelectedItemProperty] = control[!SelectingItemsControl.SelectedItemProperty],

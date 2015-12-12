@@ -2,7 +2,8 @@
   <Style Selector="TabStrip">
     <Setter Property="Template">
       <ControlTemplate>
-        <ItemsPresenter Items="{TemplateBinding Items}"
+        <ItemsPresenter MemberSelector="{TemplateBinding MemberSelector}"
+                        Items="{TemplateBinding Items}"
                         ItemsPanel="{TemplateBinding ItemsPanel}"/>
       </ControlTemplate>
     </Setter>

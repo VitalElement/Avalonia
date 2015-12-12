@@ -151,6 +151,40 @@ namespace Perspex.Controls.UnitTests
             Assert.Equal("Base", dataContext);
         }
 
+        /// <summary>
+        /// Non-headered control items should result in TabStripItems with empty content.
+        /// </summary>
+        /// <remarks>
+        /// If a TabStrip is created with non IHeadered controls as its items, don't try to
+        /// display the control in the TabStripItem: if the TabStrip is part of a TabControl
+        /// then *that* will also try to display the control, resulting in dual-parentage 
+        /// breakage.
+        /// </remarks>
+        [Fact]
+        public void Non_IHeadered_Control_Items_Should_Be_Ignored()
+        {
+            var items = new[]
+            {
+                new TextBlock { Text = "foo" },
+                new TextBlock { Text = "bar" },
+            };
+
+            var target = new TabControl
+            {
+                Template = new FuncControlTemplate<TabControl>(CreateTabControlTemplate),
+                Items = items,
+            };
+
+            target.ApplyTemplate();
+
+            var result = target.TabStrip.GetLogicalChildren()
+                .OfType<TabStripItem>()
+                .Select(x => x.Content)
+                .ToList();
+
+            Assert.Equal(new object[] { string.Empty, string.Empty }, result);
+        }
+
         private Control CreateTabControlTemplate(TabControl parent)
         {
             return new StackPanel
@@ -161,14 +195,15 @@ namespace Perspex.Controls.UnitTests
                     {
                         Name = "PART_TabStrip",
                         Template = new FuncControlTemplate<TabStrip>(CreateTabStripTemplate),
+                        MemberSelector = TabControl.HeaderSelector,
                         [!TabStrip.ItemsProperty] = parent[!TabControl.ItemsProperty],
                         [!!TabStrip.SelectedIndexProperty] = parent[!!TabControl.SelectedIndexProperty]
                     },
                     new Carousel
                     {
-                        Name = "PART_Carousel",
+                        Name = "PART_Content",
                         Template = new FuncControlTemplate<Carousel>(CreateCarouselTemplate),
-                        MemberSelector = parent.ContentSelector,
+                        MemberSelector = TabControl.ContentSelector,
                         [!Carousel.ItemsProperty] = parent[!TabControl.ItemsProperty],
                         [!Carousel.SelectedItemProperty] = parent[!TabControl.SelectedItemProperty],
                     }
@@ -182,6 +217,7 @@ namespace Perspex.Controls.UnitTests
             {
                 Name = "PART_ItemsPresenter",
                 [~ItemsPresenter.ItemsProperty] = parent[~ItemsControl.ItemsProperty],
+                [!CarouselPresenter.MemberSelectorProperty] = parent[!ItemsControl.MemberSelectorProperty],
             };
         }
 

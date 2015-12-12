@@ -4,11 +4,12 @@
       <ControlTemplate>
         <Grid RowDefinitions="Auto,*">
           <TabStrip Name="PART_TabStrip"
+                    MemberSelector="{Static TabControl.HeaderSelector}"
                     Items="{TemplateBinding Items}"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex, Mode=TwoWay}"/>
-          <Carousel Name="PART_Carousel"
+          <Carousel Name="PART_Content"
+                    MemberSelector="{Static TabControl.ContentSelector}"
                     Items="{TemplateBinding Items}"
-                    MemberSelector="Content"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex}"
                     Transition="{TemplateBinding Transition}"
                     Grid.Row="1"/>
@@ -20,12 +21,13 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Grid RowDefinitions="*,Auto">
-          <Carousel Name="PART_Carousel"
+          <Carousel Name="PART_Content"
+                    MemberSelector="{Static TabControl.ContentSelector}"
                     Items="{TemplateBinding Items}"
-                    MemberSelector="Content"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex}"
                     Transition="{TemplateBinding Transition}"/>
           <TabStrip Name="PART_TabStrip"
+                    MemberSelector="{Static TabControl.HeaderSelector}"
                     Items="{TemplateBinding Items}"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex, Mode=TwoWay}"
                     Grid.Row="1"/>
@@ -40,6 +42,7 @@
           <Border>
             <ScrollViewer>
               <TabStrip Name="PART_TabStrip"
+                        MemberSelector="{Static TabControl.HeaderSelector}"
                         Items="{TemplateBinding Items}"
                         SelectedIndex="{TemplateBinding Path=SelectedIndex, Mode=TwoWay}">
                 <TabStrip.ItemsPanel>
@@ -50,9 +53,9 @@
               </TabStrip>
             </ScrollViewer>
           </Border>
-          <Carousel Name="PART_Carousel"
+          <Carousel Name="PART_Content"
+                    MemberSelector="{Static TabControl.ContentSelector}"
                     Items="{TemplateBinding Items}"
-                    MemberSelector="Content"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex}"
                     Transition="{TemplateBinding Transition}"
                     Grid.Column="1"/>
@@ -64,14 +67,15 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Grid ColumnDefinitions="*,Auto">
-          <Carousel Name="PART_Carousel"
+          <Carousel Name="PART_Content"
+                    MemberSelector="{Static TabControl.ContentSelector}"
                     Items="{TemplateBinding Items}"
-                    MemberSelector="Content"
                     SelectedIndex="{TemplateBinding Path=SelectedIndex}"
                     Transition="{TemplateBinding Transition}"/>
           <Border Grid.Column="1">
             <ScrollViewer>
               <TabStrip Name="PART_TabStrip"
+                        MemberSelector="{Static TabControl.HeaderSelector}"
                         Items="{TemplateBinding Items}"
                         SelectedIndex="{TemplateBinding Path=SelectedIndex, Mode=TwoWay}">
                 <TabStrip.ItemsPanel>

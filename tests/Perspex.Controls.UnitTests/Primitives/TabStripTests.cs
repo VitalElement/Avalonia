@@ -15,7 +15,7 @@ namespace Perspex.Controls.UnitTests.Primitives
     public class TabStripTests
     {
         [Fact]
-        public void Header_Of_IHeadered_Should_Be_Selected()
+        public void Header_Of_IHeadered_Items_Should_Be_Used()
         {
             var items = new[]
             {
@@ -39,6 +39,30 @@ namespace Perspex.Controls.UnitTests.Primitives
             Assert.Equal(new[] { "foo", "bar" }, result);
         }
 
+        [Fact]
+        public void Data_Of_Non_IHeadered_Items_Should_Be_Used()
+        {
+            var items = new[]
+            {
+                "foo",
+                "bar"
+            };
+
+            var target = new TabStrip
+            {
+                Template = new FuncControlTemplate<TabStrip>(CreateTabStripTemplate),
+                Items = items,
+            };
+
+            target.ApplyTemplate();
+
+            var result = target.GetLogicalChildren()
+                .OfType<TabStripItem>()
+                .Select(x => x.Content)
+                .ToList();
+
+            Assert.Equal(new[] { "foo", "bar" }, result);
+        }
 
         [Fact]
         public void First_Tab_Should_Be_Selected_By_Default()
