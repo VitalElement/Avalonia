@@ -48,7 +48,7 @@ namespace Perspex.Controls.Primitives
         private static object SelectHeader(object o)
         {
             var headered = o as IHeadered;
-            return (headered != null) ? headered.Header : o;
+            return (headered != null) ? (headered.Header ?? string.Empty) : o;
         }
     }
 }

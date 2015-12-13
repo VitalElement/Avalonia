@@ -98,18 +98,6 @@ namespace Perspex.Controls
 
             TabStrip = nameScope.Find<IControl>("PART_TabStrip");
             Content = nameScope.Find<IControl>("PART_Content");
-
-            this.LogicalChildren.Clear();
-
-            if (TabStrip != null)
-            {
-                this.LogicalChildren.Add(TabStrip);
-            }
-
-            if (Content != null)
-            {
-                this.LogicalChildren.Add(Content);
-            }
         }
 
         /// <summary>
@@ -143,7 +131,7 @@ namespace Perspex.Controls
 
             if (headered != null)
             {
-                return headered.Header;
+                return headered.Header ?? string.Empty;
             }
             else if (control != null)
             {

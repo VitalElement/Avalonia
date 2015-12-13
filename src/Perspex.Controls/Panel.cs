@@ -131,7 +131,10 @@ namespace Perspex.Controls
 
             foreach (var control in controls)
             {
-                ((ISetLogicalParent)control).SetParent(parent);
+                if (control.Parent == null)
+                {
+                    ((ISetLogicalParent)control).SetParent(parent);
+                }
             }
         }
 

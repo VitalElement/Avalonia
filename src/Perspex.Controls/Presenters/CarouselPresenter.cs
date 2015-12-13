@@ -204,7 +204,8 @@ namespace Perspex.Controls.Presenters
                 {
                     var item = Items.Cast<object>().ElementAt(toIndex);
                     to = generator.ContainerFromIndex(toIndex) ??
-                        generator.Materialize(toIndex, new[] { item }, MemberSelector).FirstOrDefault();
+                         generator.Materialize(toIndex, new[] { item }, MemberSelector)
+                            .FirstOrDefault()?.ContainerControl;
 
                     if (to != null)
                     {

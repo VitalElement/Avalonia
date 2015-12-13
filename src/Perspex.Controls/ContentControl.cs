@@ -126,17 +126,15 @@ namespace Perspex.Controls
             {
                 var logical = oldValue as ILogical;
 
-                if (logical != null && logical.LogicalParent == this)
+                if (logical != null)
                 {
-                    ((ISetLogicalParent)logical).SetParent(null);
                     this.LogicalChildren.Remove(logical);
                 }
 
                 logical = newValue as ILogical;
 
-                if (logical != null && logical.LogicalParent == null)
+                if (logical != null)
                 {
-                    ((ISetLogicalParent)logical).SetParent(this);
                     this.LogicalChildren.Add(logical);
                 }
             }
@@ -149,7 +147,7 @@ namespace Perspex.Controls
         /// <param name="child">The new child.</param>
         private void PresenterChildChanged(IControl child)
         {
-            UpdateLogicalChild(this.LogicalChildren.FirstOrDefault(), child);
+            UpdateLogicalChild(LogicalChildren.FirstOrDefault(), child);
         }
     }
 }

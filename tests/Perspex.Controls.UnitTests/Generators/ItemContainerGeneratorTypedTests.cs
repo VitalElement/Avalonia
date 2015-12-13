@@ -17,6 +17,7 @@ namespace Perspex.Controls.UnitTests.Generators
             var target = new ItemContainerGenerator<ListBoxItem>(owner, ListBoxItem.ContentProperty);
             var containers = target.Materialize(0, items, null);
             var result = containers
+                .Select(x => x.ContainerControl)
                 .OfType<ListBoxItem>()
                 .Select(x => x.Content)
                 .ToList();

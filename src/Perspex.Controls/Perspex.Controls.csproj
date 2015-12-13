@@ -43,6 +43,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DockPanel.cs" />
+    <Compile Include="Generators\ItemContainer.cs" />
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="INameScope.cs" />
     <Compile Include="NameScope.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Separator.cs" />
     <Compile Include="SystemDialog.cs" />
     <Compile Include="Generators\ITreeItemContainerGenerator.cs" />
-    <Compile Include="Generators\ItemContainers.cs" />
+    <Compile Include="Generators\ItemContainerEventArgs.cs" />
     <Compile Include="IContentControl.cs" />
     <Compile Include="IControl.cs" />
     <Compile Include="IPanel.cs" />

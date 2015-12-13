@@ -105,7 +105,7 @@ namespace TestApplication
             };
 
             container.Classes.Add(":container");
-
+            container.PointerPressed += (s, e) => System.Diagnostics.Debugger.Break();
             
             window.Show();
             return window;

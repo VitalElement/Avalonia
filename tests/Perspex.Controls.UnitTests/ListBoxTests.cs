@@ -14,7 +14,7 @@ namespace Perspex.Controls.UnitTests
     public class ListBoxTests
     {
         [Fact]
-        public void LogicalChildren_Should_Be_Set()
+        public void LogicalChildren_Should_Be_Set_For_DataTemplate_Generated_Items()
         {
             var target = new ListBox
             {

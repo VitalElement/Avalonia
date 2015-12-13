@@ -42,30 +42,29 @@ namespace Perspex.Controls.UnitTests
         }
 
         [Fact]
-        public void Logical_Children_Should_Be_TabStrip_And_Carousel()
+        public void Logical_Children_Should_Be_TabItems()
         {
-            var target = new TabControl
+            var items = new[]
             {
-                Template = new FuncControlTemplate<TabControl>(CreateTabControlTemplate),
-                Items = new[]
+                new TabItem
                 {
-                    new TabItem
-                    {
-                        Content = "foo"
-                    },
-                    new TabItem
-                    {
-                        Content = "bar"
-                    },
+                    Content = "foo"
+                },
+                new TabItem
+                {
+                    Content = "bar"
                 },
             };
 
-            target.ApplyTemplate();
+            var target = new TabControl
+            {
+                Template = new FuncControlTemplate<TabControl>(CreateTabControlTemplate),
+                Items = items,
+            };
 
-            var logicalChildren = target.GetLogicalChildren().ToList();
-            Assert.Equal(2, logicalChildren.Count);
-            Assert.IsType<TabStrip>(logicalChildren[0]);
-            Assert.IsType<Carousel>(logicalChildren[1]);
+            Assert.Equal(items, target.GetLogicalChildren());
+            target.ApplyTemplate();
+            Assert.Equal(items, target.GetLogicalChildren());
         }
 
         [Fact]
@@ -131,23 +130,23 @@ namespace Perspex.Controls.UnitTests
 
             var carousel = target.GetLogicalChildren().OfType<Carousel>().Single();
 
-            var dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
+            var dataContext = ((TextBlock)carousel.Presenter.Panel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal(items[0], dataContext);
 
             target.SelectedIndex = 1;
-            dataContext = ((Button)carousel.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((Button)carousel.Presenter.Panel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal(items[1], dataContext);
 
             target.SelectedIndex = 2;
-            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.Presenter.Panel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Base", dataContext);
 
             target.SelectedIndex = 3;
-            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.Presenter.Panel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Qux", dataContext);
 
             target.SelectedIndex = 4;
-            dataContext = ((TextBlock)carousel.GetLogicalChildren().Single()).DataContext;
+            dataContext = ((TextBlock)carousel.Presenter.Panel.GetLogicalChildren().Single()).DataContext;
             Assert.Equal("Base", dataContext);
         }
 

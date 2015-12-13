@@ -2,6 +2,9 @@
 // Licensed under the MIT license. See licence.md file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Reactive.Linq;
 using Perspex.Collections;
 using Perspex.Controls.Primitives;
@@ -252,11 +255,31 @@ namespace Perspex.Controls
                 if (_logicalChildren == null)
                 {
                     var list = new PerspexList<ILogical>();
-                    list.ResetBehavior = ResetBehavior.Remove;
-                    _logicalChildren = list;
+                    LogicalChildren = list;
                 }
 
                 return _logicalChildren;
+            }
+
+            set
+            {
+                Contract.Requires<ArgumentNullException>(value != null);
+
+                if (_logicalChildren != value)
+                {
+                    if (_logicalChildren != null)
+                    {
+                        _logicalChildren.CollectionChanged -= LogicalChildrenCollectionChanged;
+                    }
+                }
+
+                if (value is PerspexList<ILogical>)
+                {
+                    ((PerspexList<ILogical>)value).ResetBehavior = ResetBehavior.Remove;
+                }
+
+                _logicalChildren = value;
+                _logicalChildren.CollectionChanged += LogicalChildrenCollectionChanged;
             }
         }
 
@@ -417,7 +440,7 @@ namespace Perspex.Controls
         /// <param name="collection">The logical children to use.</param>
         protected void RedirectLogicalChildren(IPerspexList<ILogical> collection)
         {
-            _logicalChildren = collection;
+            LogicalChildren = collection;
         }
 
         /// <summary>
@@ -436,6 +459,50 @@ namespace Perspex.Controls
                 if (!notifying)
                 {
                     control.OnDataContextChanged();
+                }
+            }
+        }
+
+        private void LogicalChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    SetLogicalParent(e.NewItems.Cast<ILogical>());
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    ClearLogicalParent(e.OldItems.Cast<ILogical>());
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    ClearLogicalParent(e.OldItems.Cast<ILogical>());
+                    SetLogicalParent(e.NewItems.Cast<ILogical>());
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    throw new NotSupportedException("Reset should not be signalled on LogicalChildren collection");
+            }
+        }
+
+        private void SetLogicalParent(IEnumerable<ILogical> children)
+        {
+            foreach (var i in children)
+            {
+                if (i.LogicalParent == null)
+                {
+                    ((ISetLogicalParent)i).SetParent(this);
+                }
+            }
+        }
+
+        private void ClearLogicalParent(IEnumerable<ILogical> children)
+        {
+            foreach (var i in children)
+            {
+                if (i.LogicalParent == this)
+                {
+                    ((ISetLogicalParent)i).SetParent(null);
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace Perspex.Collections
     /// </item>
     /// </list>
     /// </remarks>
-    public class PerspexList<T> : IPerspexList<T>, IList, INotifyCollectionChanged, INotifyPropertyChanged
+    public class PerspexList<T> : IPerspexList<T>, IList
     {
         private List<T> _inner;
 
