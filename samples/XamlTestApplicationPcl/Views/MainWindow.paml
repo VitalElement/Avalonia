@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:XamlTestApplication;assembly=XamlTestApplicationPcl"
         xmlns:vm="clr-namespace:XamlTestApplication.ViewModels;assembly=XamlTestApplicationPcl"
+        xmlns:c="clr-namespace:XamlTestApplication.Views;assembly=XamlTestApplicationPcl"
         Title="Perspex Test Application" Width="800" Height="600">
     <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,*">
       <Menu Grid.ColumnSpan="2">
@@ -22,6 +23,7 @@
           <TabControl.Transition>
               <PageSlide Duration="0.25" />
           </TabControl.Transition>
+        
           <TabItem Header="Buttons">
               <ScrollViewer CanScrollHorizontally="False">
                   <StackPanel Margin="10" Gap="4">
@@ -36,6 +38,10 @@
                   </StackPanel>
               </ScrollViewer>
           </TabItem>
+        
+          <TabItem Header="Injecting Content" Content="{Binding TestContent}">
+          
+        </TabItem>
           <TabItem Header="Text">
               <StackPanel Margin="10" Gap="4">
                   <TextBlock Text="TextBlock" FontWeight="Medium" FontSize="20" Foreground="#212121" />

@@ -46,6 +46,7 @@
     <Compile Include="ViewModels\TestItem.cs" />
     <Compile Include="ViewModels\TestNode.cs" />
     <Compile Include="Views\MainWindow.cs" />
+    <Compile Include="Views\TestControl.paml.cs" />
     <Compile Include="XamlTestApp.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Views\TestControl.paml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,14 +1,27 @@
 ﻿// Copyright (c) The Perspex Project. All rights reserved.
 // Licensed under the MIT license. See licence.md file in the project root for full license information.
 
+using ReactiveUI;
 using System.Collections.Generic;
+using XamlTestApplication.Views;
 
 namespace XamlTestApplication.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ReactiveObject
     {
+        private object testContent;
+
+        public object TestContent
+        {
+            get { return testContent; }
+            set { testContent = value; }
+        }
+
+
         public MainWindowViewModel()
         {
+            
+
             Items = new List<TestItem>();
 
             for (int i = 0; i < 10; ++i)
