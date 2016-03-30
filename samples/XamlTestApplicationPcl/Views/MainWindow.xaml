@@ -70,6 +70,7 @@
                       Foreground="#212121" />
           <TextBlock Text="A label capable of displaying HTML content" FontSize="13" Foreground="#727272"
                       Margin="0, 0, 0, 10" />
+         
         </StackPanel>
       </TabItem>
       <TabItem Header="Input">

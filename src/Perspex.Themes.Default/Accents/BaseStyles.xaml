@@ -3,6 +3,102 @@
        xmlns:mut="https://github.com/perspex/mutable"
        xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <Style.Resources>
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundAccentBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="{StyleResource SystemAltHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundAltMediumHighBrush" Color="{StyleResource SystemAltMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundAltMediumLowBrush" Color="{StyleResource SystemAltMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundBaseMediumHighBrush" Color="{StyleResource SystemBaseMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundBaseMediumLowBrush" Color="{StyleResource SystemBaseMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundChromeBlackHighBrush" Color="{StyleResource SystemChromeBlackHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundChromeBlackMediumBrush" Color="{StyleResource SystemChromeBlackMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundChromeMediumBrush" Color="{StyleResource SystemChromeMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundChromeMediumLowBrush" Color="{StyleResource SystemChromeMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundChromeWhiteBrush" Color="{StyleResource SystemChromeWhiteColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundListLowBrush" Color="{StyleResource SystemListLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlBackgroundListMediumBrush" Color="{StyleResource SystemListMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledAccentBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledBaseMediumLowBrush" Color="{StyleResource SystemBaseMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledChromeDisabledHighBrush" Color="{StyleResource SystemChromeDisabledHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledChromeDisabledLowBrush" Color="{StyleResource SystemChromeDisabledLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledChromeHighBrush" Color="{StyleResource SystemChromeHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledChromeMediumLowBrush" Color="{StyleResource SystemChromeMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledListMediumBrush" Color="{StyleResource SystemListMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlDisabledTransparentBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundAltHighBrush" Color="{StyleResource SystemAltHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundAltMediumHighBrush" Color="{StyleResource SystemAltMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundBaseMediumHighBrush" Color="{StyleResource SystemBaseMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundBaseMediumLowBrush" Color="{StyleResource SystemBaseMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeBlackHighBrush" Color="{StyleResource SystemChromeBlackHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeHighBrush" Color="{StyleResource SystemChromeHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeMediumBrush" Color="{StyleResource SystemChromeMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeWhiteBrush" Color="{StyleResource SystemChromeWhiteColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeDisabledLowBrush" Color="{StyleResource SystemChromeDisabledLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundListLowBrush" Color="{StyleResource SystemListLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundListMediumBrush" Color="{StyleResource SystemListMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundTransparentBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeBlackMediumBrush" Color="{StyleResource SystemChromeBlackMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlForegroundChromeBlackMediumLowBrush" Color="{StyleResource SystemChromeBlackMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAccentBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltAltHighBrush" Color="{StyleResource SystemAltHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumHighBrush" Color="{StyleResource SystemBaseMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltAltMediumHighBrush" Color="{StyleResource SystemAltMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltBaseMediumLowBrush" Color="{StyleResource SystemBaseMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltListAccentHighBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.9" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltListAccentLowBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.6" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltListAccentMediumBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.8" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltChromeWhiteBrush" Color="{StyleResource SystemChromeWhiteColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightAltTransparentBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightBaseMediumHighBrush" Color="{StyleResource SystemBaseMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightBaseMediumLowBrush" Color="{StyleResource SystemBaseMediumLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightChromeAltLowBrush" Color="{StyleResource SystemChromeAltLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightChromeHighBrush" Color="{StyleResource SystemChromeHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightListAccentHighBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.9" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.6" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{StyleResource SystemAccentColor}" Opacity="0.8" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="{StyleResource SystemListMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{StyleResource SystemListLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHighlightTransparentBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="SystemControlHyperlinkTextBrush" Color="{StyleResource SystemAccentColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHyperlinkBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumHighBrush" Color="{StyleResource SystemBaseMediumHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundAltMediumBrush" Color="{StyleResource SystemAltMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundMediumAltMediumBrush" Color="{StyleResource SystemAltMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundBaseLowBrush" Color="{StyleResource SystemBaseLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundListLowBrush" Color="{StyleResource SystemListLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageBackgroundChromeLowBrush" Color="{StyleResource SystemChromeLowColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageTextBaseHighBrush" Color="{StyleResource SystemBaseHighColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageTextBaseMediumBrush" Color="{StyleResource SystemBaseMediumColor}" />
+    <mut:SolidColorBrush x:Key="SystemControlPageTextChromeBlackMediumLowBrush" Color="{StyleResource SystemChromeBlackMediumLowColor}" />
+
+    <mut:SolidColorBrush x:Key="ButtonBackgroundThemeBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="ButtonBorderThemeBrush" Color="#FFFFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent" />
+    <mut:SolidColorBrush x:Key="ButtonDisabledBorderThemeBrush" Color="#66FFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonDisabledForegroundThemeBrush" Color="#66FFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonForegroundThemeBrush" Color="#FFFFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonPointerOverBackgroundThemeBrush" Color="#21FFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonPointerOverForegroundThemeBrush" Color="#FFFFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush" Color="#FFFFFFFF" />
+    <mut:SolidColorBrush x:Key="ButtonPressedForegroundThemeBrush" Color="#FF000000" />
+    
     <sys:Double x:Key="ThemeBorderThickness">2</sys:Double>
     <sys:Double x:Key="ThemeDisabledOpacity">0.5</sys:Double>
 
