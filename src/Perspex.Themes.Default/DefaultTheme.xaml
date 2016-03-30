@@ -1,4 +1,5 @@
 ﻿<Styles xmlns="https://github.com/perspex">
+  <StyleInclude Source="resm:Perspex.Themes.Default.Accents.BaseStyles.xaml?assembly=Perspex.Themes.Default"/>
   <StyleInclude Source="resm:Perspex.Themes.Default.FocusAdorner.xaml?assembly=Perspex.Themes.Default"/>
   <StyleInclude Source="resm:Perspex.Themes.Default.Button.xaml?assembly=Perspex.Themes.Default"/>
   <StyleInclude Source="resm:Perspex.Themes.Default.Carousel.xaml?assembly=Perspex.Themes.Default"/>

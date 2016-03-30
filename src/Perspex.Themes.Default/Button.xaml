@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/perspex">
   <Style Selector="Button">
-    <Setter Property="Background" Value="{StyleResource ThemeControlMidBrush}"/>
-    <Setter Property="BorderBrush" Value="{StyleResource ThemeBorderLightBrush}"/>
+    <Setter Property="Background" Value="{StyleResource SystemBaseLowColor}"/>
+    <Setter Property="BorderBrush" Value="{StyleResource SystemBaseLowColor}"/>
     <Setter Property="BorderThickness" Value="{StyleResource ThemeBorderThickness}"/>
     <Setter Property="Foreground" Value="{StyleResource ThemeForegroundBrush}"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>

@@ -43,13 +43,5 @@
     <SolidColorBrush x:Key="SystemChromeWhiteColor">#FFFFFFFF</SolidColorBrush>
     <SolidColorBrush x:Key="SystemListLowColor">#19000000</SolidColorBrush>
     <SolidColorBrush x:Key="SystemListMediumColor">#33000000</SolidColorBrush>
-
-
-    <sys:Double x:Key="ThemeBorderThickness">2</sys:Double>
-    <sys:Double x:Key="ThemeDisabledOpacity">0.5</sys:Double>
-
-    <sys:Double x:Key="FontSizeSmall">10</sys:Double>
-    <sys:Double x:Key="FontSizeNormal">12</sys:Double>
-    <sys:Double x:Key="FontSizeLarge">16</sys:Double>
   </Style.Resources>
 </Style>
