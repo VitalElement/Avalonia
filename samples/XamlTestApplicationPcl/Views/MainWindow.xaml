@@ -388,7 +388,21 @@
           <Carousel Items="{Binding Documents}" SelectedIndex="{Binding #strip.SelectedIndex}" IsVirtualized="false">
             <Carousel.DataTemplates>
               <DataTemplate>
-                <TextBox Text="{Binding Text}" />
+                <Grid>
+                  <StackPanel>
+                    <DropDown VerticalAlignment="Center" SelectedIndex="0">
+                      <StackPanel>
+                        <TextBlock Text="Item 1" FontSize="24" />
+                        <TextBlock Text="Item 1 Value" />
+                      </StackPanel>
+                      <StackPanel>
+                        <TextBlock Text="Item 2" FontSize="24" />
+                        <TextBlock Text="Item 2 Value" />
+                      </StackPanel>
+                    </DropDown>
+                    <TextBox Text="{Binding Text}" />
+                  </StackPanel>                                    
+                </Grid>                
               </DataTemplate>
             </Carousel.DataTemplates>
           </Carousel>
