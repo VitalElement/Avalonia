@@ -11,13 +11,17 @@ namespace Avalonia.Skia
     internal class DrawingContextImpl : IDrawingContextImpl
     {
         private Stack<PaintWrapper> maskStack = new Stack<PaintWrapper>();
+        private Matrix _scaleMatrix;
         
         public SKCanvas Canvas { get; private set; }
 
-        public DrawingContextImpl(SKCanvas canvas)
+        public DrawingContextImpl(SKCanvas canvas, double scaleFactor = 1.0)
         {
             Canvas = canvas;
             Canvas.Clear();
+
+            _scaleMatrix = Matrix.CreateScale(scaleFactor, scaleFactor);
+            _currentTransform = _currentTransform * _scaleMatrix;
         }
 
         public void DrawImage(IBitmap source, double opacity, Rect sourceRect, Rect destRect)
@@ -355,7 +359,11 @@ namespace Avalonia.Skia
                     return;
 
                 _currentTransform = value;
-                Canvas.SetMatrix(value.ToSKMatrix());
+
+                // TODO This line can be removed when DrawingContext bugs are fixed.
+                _currentTransform *= _scaleMatrix;
+
+                Canvas.SetMatrix(_currentTransform.ToSKMatrix());
             }
         }
     }

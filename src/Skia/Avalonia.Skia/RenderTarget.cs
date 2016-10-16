@@ -133,9 +133,13 @@ namespace Avalonia.Skia
             canvas.RestoreToCount(0);
             canvas.Save();
 
+            var scale = 1.0;
+
 #if __IOS__
-            var screenScale = UIScreen.MainScreen.Scale;
-            canvas.Scale((float)screenScale, (float)screenScale);
+            scale = UIScreen.MainScreen.Scale;      
+#elif WIN32
+            var dpi = GetWindowDpi().Width;
+            scale = dpi / 96.0;      
 #endif
 
             canvas.Clear(SKColors.Red);
@@ -143,8 +147,33 @@ namespace Avalonia.Skia
 
             return
                 new DrawingContext(
-                    new WindowDrawingContextImpl(this));
+                    new WindowDrawingContextImpl(this, scale));
         }
+
+#if WIN32
+        private Size GetWindowDpi()
+        {
+            if (UnmanagedMethods.ShCoreAvailable)
+            {
+                uint dpix, dpiy;
+
+                var monitor = UnmanagedMethods.MonitorFromWindow(
+                    _hwnd.Handle,
+                    UnmanagedMethods.MONITOR.MONITOR_DEFAULTTONEAREST);
+
+                if (UnmanagedMethods.GetDpiForMonitor(
+                        monitor,
+                        UnmanagedMethods.MONITOR_DPI_TYPE.MDT_EFFECTIVE_DPI,
+                        out dpix,
+                        out dpiy) == 0)
+                {
+                    return new Size(dpix, dpiy);
+                }
+            }
+
+            return new Size(96, 96);
+        }
+#endif
 
         public void Present()
         {
